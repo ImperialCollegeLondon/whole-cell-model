@@ -284,7 +284,15 @@ function model_AA3(results,y,p,t)
 #     Kgamma= gmax/180 #Kgamma is the half maximal translational elongation threshold, gmax is the max rate of translational elongation and Kp is net rate of translation of housekeeping proteins
     Kgamma = 3.0e8
     #should equal 7 molecules per cell
-    gam= gmax*a/(Kgamma + a) #gamma is the current rate of translational elongation? gmax is max rate of translational elongation and a is ATP (energy)level
+    #gam= gmax*a/(Kgamma + a) #gamma is the current rate of translational elongation? gmax is max rate of translational elongation and a is ATP (energy)level
+
+    #k_ribo_a = 1
+    #k_ribo_AA = 1
+    #k_ribo_a_AA = 1
+    #k_ribo_AA_a = 1
+
+    gam= (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA) #updated gamma equation that uses both ATP and AA
+
 
     ttrate= (rmq + rmr + rmt + rmm + nit_mrna_ribo+AA_mrna_ribo)*gam #total translation rate (sum of the mRNA/ribosome complexes times translation rate)
     lam= ttrate/(Ms-AA) #lambda, the growth rate/dilution rate, the ratio of total translation rate to total cell mass
@@ -306,6 +314,7 @@ function model_AA3(results,y,p,t)
     # k_NH4_AA= 5.0 #rate of binding of the end product acting as an inhibitor to the enzyme-NH4 complex
 
     AA_vo = ((k_cat_AA*a*NH4)/k_a_NH4*k_a)/(1+((1+(AA/k_a_AA)+(NH4/k_a_NH4)))*(a/k_a)+(1+(AA/k_NH4_AA)*(NH4/k_NH4)))
+
     new_AA = AA_vo*AA_prot
 
 #     Kgamma = 3.0e8
@@ -410,6 +419,7 @@ function model_AA3(results,y,p,t)
     ##########################################
 
     results[22]= new_AA-AA_req-lam*AA #num of AA
+	####save the final values of these three variable to file###
     if AA<0.00000001 AA=0.00000001 end
 
     results[23]=(gam/nx)*AA_mrna_ribo-lam*AA_prot #num of AA making proteins

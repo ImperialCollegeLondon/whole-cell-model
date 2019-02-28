@@ -7,8 +7,18 @@ using Pandas
 using Plots
 using Dates
 
-include("aa-functions.jl")
-
+println("Would you like to run the full model or the reduced?")
+println("Please input 'f' or 'r')")
+model_type= string(readline(stdin))
+if model_type == string('f')
+	include("aa-functions.jl")
+	println("running full model")
+elseif model_type == string('r')
+	include("reduced-function.jl")
+	println("running reduced model")
+else
+	println("Please input either 'f' or 'r'")
+end
 # parameters
 thetar= 426.8693338968694 #ribosome transcription threshold, molecules per cell
 # s0= 1.0e4 #external substrate level, molecules
@@ -139,26 +149,31 @@ init3 =solved2[endstate2]
 # println("Please input what start value you would like to run the parameter sweep to:")
 # input_start1= parse(Float64,readline(stdin))
 
+println("Running parameter sweep from 0.01 to 10000. Please hold.")
 
-# println("Please input what end value you would like to run the parameter sweep to:")
-# input_end1= parse(Float64,readline(stdin))
-input_end1=30.0
-println("Running parameter sweep. Please hold.")
-for i1 in range(1.0,step = 20, stop = input_end1)
+
+for i1 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
     global(k_cat_AA)= i1
-    for i2 in range(1.0,step = 20, stop = input_end1)
+    for i2 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
         global(k_a_NH4)=i2
-        for i3 in range(11.0,step = 20, stop = input_end1)
+        for i3 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
             global(k_a)= i3
-            for i4 in range(1.0,step = 20, stop = input_end1)
+            for i4 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
                 global(k_NH4)= i4
-                for i5 in range(1.0,step = 20, stop = input_end1)
+                for i5 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
                     global(k_a_AA)=i5
-                    for i6 in range(1.0,step = 20, stop = input_end1)
+                    for i6 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
                         global(k_NH4_AA)=i6
+for i7 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                        global(k_ribo_a)=i7
+for i8 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                        global(k_ribo_AA)=i8
+for i9 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                        global(k_ribo_a_AA)=i9
+for i10 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                        global(k_ribo_AA_a)=i10
 
-
-
+#    println("current values are k_cat_AA: $i1 k_a_NH4: $i2")
     problm3 = ODEProblem(model_AA3,init3,(time2,time3))
 
     solved3 = solve(problm3)
@@ -223,9 +238,9 @@ for i1 in range(1.0,step = 20, stop = input_end1)
     # using Dates
     # using CSV
     # filename= "../data/AA-model-plot-"* string(now())
-    filename= "../data/AA-plot-k_AA_"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"*string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA" *string(i6)
+    filename= "../data/AA-plot-k_AA_"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"*string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA" *string(i6)*"k_ribo_a"*string(i7)*"k_ribo_AA"*string(i8)*"k_ribo_a_AA"*string(i9)*"k_ribo_AA_a"*string(i10)
     savefig(plt, filename)
-    println("Plotted and saved model k_cat_AA: ", i1," k_a_NH4: ", i2,"k_a: ",i3,"k_NH4: ",i4,"k_a_AA: ",i5,"k_NH4_AA: ",i6)
+    println("Plotted and saved model k_cat_AA: ", i1," k_a_NH4: ", i2,"k_a: ",i3,"k_NH4: ",i4,"k_a_AA: ",i5,"k_NH4_AA: ",i6,"k_ribo_a: ",i7,"k_ribo_AA: ",i8,"k_ribo_a_AA: ",i9,"k_ribo_AA_a: ",i10)
     # filename2= filename* ".csv"
     # CSV.write(filename2, output)
 
@@ -235,6 +250,9 @@ end
 end
 end
 end
-
+end
+end
+end
+end
 
 println("Thanks for running the model!")
