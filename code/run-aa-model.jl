@@ -37,7 +37,18 @@ vmax_AA = 1000 #max turnover of subtrates and NH4 into amino acids by AA protein
 Kq= 152219.0403737490 #housekeeping proteins autoinhibition threshold
 #Kp= 0 #180.1378030928276 #net rate of translating gratuitous proteins
 Kt= 1.0e3 #the half maximal nutrient import threshold, molecules per cell minute
-Km= 1.0e4 #half maximal enzymatic threshold (for michealas menton kinetics)
+
+
+
+
+################################################################
+Km= 1.0e3 #1.0e4 #half maximal enzymatic threshold (for michealas menton kinetics)
+#was 1.0e3 in orginal code. why did I change it??
+################################################################
+
+
+
+
 Km_nit = 0.0#Km #0.18 #half maximal enzymatic threshold for nitrogenase. from Barney, Yurth et al. 2009
 Km_AA =1#half maximal threshold for the amino acid making protein. need to look this up!
 
@@ -99,7 +110,7 @@ nit_mrna_ribo_0 = 0#num of nitrogenase mRNA-ribosome complexes
 s_out = 1e5 #external substrate
 exported_0= 0#total amount of NH4 exported
 N_0 = 1 #num of bacteria cells to start with
-AA_0 = 500 #9.6e8 #num of amino acids to start with
+AA_0 = 9634500.0 #9.6e8 #num of amino acids to start with
 AA_prot_0 = 0
 AA_mrna_0=0
 AA_mrna_ribo_0=0
@@ -137,6 +148,16 @@ solved2 = solve(problm2)
 println("burn in 2 complete")
 
 
+if model_type == string('r')
+    df1= DataFrame(solved)
+    df2= DataFrame(solved2)
+    dfs = [df1,df2]
+    output= DataFrame(Pandas.concat(dfs))
+    Pandas.to_csv(output, "reduced-model-output.csv")
+    println("output of reduced model saved as reduced-model-output.csv Thanks for running the model!")
+exit()
+end
+
 println("Please input how many timesteps you would like the amino acid model to run (10000+ recommended)")
 
 input3= parse(Float64,readline(stdin))
@@ -149,32 +170,36 @@ init3 =solved2[endstate2]
 # println("Please input what start value you would like to run the parameter sweep to:")
 # input_start1= parse(Float64,readline(stdin))
 
-println("Running parameter sweep from 0.01 to 10000. Please hold.")
+println("Running parameter sweep. Please hold.")
 
 
-for i1 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+for i1 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
     global(k_cat_AA)= i1
-    for i2 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+    for i2 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
         global(k_a_NH4)=i2
-        for i3 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+        for i3 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
             global(k_a)= i3
-            for i4 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+            for i4 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
                 global(k_NH4)= i4
-                for i5 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                for i5 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
                     global(k_a_AA)=i5
-                    for i6 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+                    for i6 in (0.01)#,100.0,10.0,100.0,1000.0,10000.0)
                         global(k_NH4_AA)=i6
-for i7 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+for i7 in (0.01)#,10.0,100.0,1000.0,10000.0)
                         global(k_ribo_a)=i7
-for i8 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+for i8 in (0.01)#,10.0,100.0,1000.0,10000.0)
                         global(k_ribo_AA)=i8
-for i9 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+for i9 in (0.01)#,10.0,100.0,1000.0,10000.0)
                         global(k_ribo_a_AA)=i9
-for i10 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
+for i10 in (10000.0)#,0.01,10.0,100.0,1000.0,10000.0)
                         global(k_ribo_AA_a)=i10
 
 #    println("current values are k_cat_AA: $i1 k_a_NH4: $i2")
     problm3 = ODEProblem(model_AA3,init3,(time2,time3))
+
+    open("../data/high-AA-params-file-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9-$i10.csv","w") do f
+    write(f,"new_AA, AA_req, AA_prot\n")
+    end
 
     solved3 = solve(problm3)
     endstate3 = size(solved3,2)
@@ -191,7 +216,7 @@ for i10 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
 
     # using Dates
     # filename= "../data/AA-model-results-"* string(now())
-    filename = "../data/AA-results-k_cat_AA-"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"*string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA" *string(i6)
+    filename = "../data/high-AA-results-k_AA_"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"* string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA"*string(i6)*"k_ribo_a"*string(i7)*"k_ribo_AA"*string(i8)*"k_ribo_a_AA"*string(i9)*"k_ribo_AA_a"*string(i10)
     filename2= filename* ".csv"
     Pandas.to_csv(output, filename2)
 
@@ -238,7 +263,7 @@ for i10 in (0.01,100.0)#,10.0,100.0,1000.0,10000.0)
     # using Dates
     # using CSV
     # filename= "../data/AA-model-plot-"* string(now())
-    filename= "../data/AA-plot-k_AA_"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"*string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA" *string(i6)*"k_ribo_a"*string(i7)*"k_ribo_AA"*string(i8)*"k_ribo_a_AA"*string(i9)*"k_ribo_AA_a"*string(i10)
+    filename= "../data/high-AA-plot-k_AA_"*string(i1)*"k_a_NH4"*string(i2)*"k_a"*string(i3)*"k_NH4"*string(i4)*"k_a_AA"*string(i5)*"k_NH4_AA" *string(i6)*"k_ribo_a"*string(i7)*"k_ribo_AA"*string(i8)*"k_ribo_a_AA"*string(i9)*"k_ribo_AA_a"*string(i10)
     savefig(plt, filename)
     println("Plotted and saved model k_cat_AA: ", i1," k_a_NH4: ", i2,"k_a: ",i3,"k_NH4: ",i4,"k_a_AA: ",i5,"k_NH4_AA: ",i6,"k_ribo_a: ",i7,"k_ribo_AA: ",i8,"k_ribo_a_AA: ",i9,"k_ribo_AA_a: ",i10)
     # filename2= filename* ".csv"
