@@ -19,23 +19,25 @@ sorted_data= raw_data[,order(names(raw_data))]
 colnames(sorted_data)<- substring(names(sorted_data),6)
 
 sorted_again<-sorted_data[,c("tamp","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25")]
-colnames(sorted_again)= c("timestep","S_external 1","ribo mrna comp 2","metab enzyme 3","housekpng mrna comp 4","trans mrna comp 5","transporter prot 6","metab mrna comp 7","trans mrna 8","metab mrna 9","housekepng prot 10","si11","housekpng mrna 12","ribo mrna 13","free ribo 14","NH4 int 15","nit mrna 16","nit mrna comp 17","nitrogenase18","cumulative NH4 19","num cells 20","ATP 21","AA 22","AA prot 23","AA mRNA 24","AA mrna comp 25")
+colnames(sorted_again)= c("timestep","1S_external","2ribo mrna comp","3metab enzyme","4housekpng mrna comp","5trans mrna comp","6transporter prot","7metab mrna comp","8trans mrna","9metab mrna","10housekepng prot","11si","12housekpng mrna","13ribo mrna","14free ribo","15NH4 int","16nit mrna","17nit mrna comp","18nitrogenase","19cumulative NH4","20num cells","21ATP","22AA","23AA prot","24AA mRNA","25AA mrna comp")
 
 melted_data<- melt(sorted_again, id.var="timestep")
 melted_data['log_molecules']= log(melted_data['value']+0.1)
 
 plt = ggplot(data = melted_data, aes(x = timestep, y = log(value)))+geom_line(aes(color = variable))
-plt2=ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))
+# plt2=ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))
 plt
-plt2
+# plt2
+plot(y=sorted_again$`20num cells`,x= sorted_again$timestep)
+
+plt3 = ggplot(data = melted_data, aes(x = timestep, y = log(value+0.1))) +theme(legend.position = "none")+geom_point(aes(color = variable))+ facet_wrap(~ variable, ncol = 5)
+plt3
 
 
-
-
-par(mfcol=c(4,1))
-params_data = read.csv("../data/high-AA-params-file-0.01-0.01-0.01-0.01-0.01-0.01-0.01-0.01-0.01-1.0.csv")
-AA_3= raw_data[raw_data$timestamp>20000,]
-plot(y= AA_3$value22, x=AA_3$timestamp, ylab = "num of AA (k_ribo_AA_a:1.0)")
-plot(params_data$new_AA, ylab = "num of AA produced")
-plot(params_data$AA_prot, ylab ="AA proteins")
-plot(params_data$AA_req, ylab = "AA requirement")
+# par(mfcol=c(4,1))
+# params_data = read.csv("../data/high-AA-params-file-0.01-0.01-0.01-0.01-0.01-0.01-0.01-0.01-0.01-1.0.csv")
+# #AA_3= raw_data[raw_data$timestamp>20000,]
+# plot(y= raw_data$value22, x=raw_data$timestamp, ylab = "num of AA (k_ribo_AA_a:1.0)")
+# plot(params_data$new_AA, ylab = "num of AA produced")
+# plot(params_data$AA_prot, ylab ="AA proteins")
+# plot(params_data$AA_req, ylab = "AA requirement")

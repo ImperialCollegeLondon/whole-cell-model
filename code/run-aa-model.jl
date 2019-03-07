@@ -31,7 +31,7 @@ Ms=1.0e4 #mid log mass of the cell
 vm= 5800.0 #max (metabolic?) enzymatic rate, per minute
 vmax_nit = 0.0#650 #max rate of nitrogenase protein., nmol NH4 per minute per mg from Barney, Yurth et al. 2009
 vt= 726.0 #max rate of movement of substrate by transporter protein
-vmax_AA = 1000 #max turnover of subtrates and NH4 into amino acids by AA protein
+vmax_AA = 0.0#1000 #max turnover of subtrates and NH4 into amino acids by AA protein
 
 
 Kq= 152219.0403737490 #housekeeping proteins autoinhibition threshold
@@ -50,14 +50,14 @@ Km= 1.0e3 #1.0e4 #half maximal enzymatic threshold (for michealas menton kinetic
 
 
 Km_nit = 0.0#Km #0.18 #half maximal enzymatic threshold for nitrogenase. from Barney, Yurth et al. 2009
-Km_AA =1#half maximal threshold for the amino acid making protein. need to look this up!
+Km_AA = 0.0#1#half maximal threshold for the amino acid making protein. need to look this up!
 
 
 we= 4.139172187824451#max enzyme mRNA transcription rate
 wr= 929.9678874564831 #rate of transcription of ribosomal protein mRNAs
 wq= 948.9349882947897 #rate of transcription of housekeeping protein mRNAs
 v_nit= 0.0#900 #rate of transcription of nitrogenase coding mRNAs
-w_AA= 10 #rate of transcription of AA making protein
+w_AA= 0#10 #rate of transcription of AA making protein
 ############################################################
 ############need to look this ^ up!#########################
 ############################################################
@@ -71,7 +71,7 @@ nx= 300.0 #length of non ribosomal proteins (num amino acids per protein)
 # define rate constants
 # b= 0 #maybe inhibition efficiency by chloramphenicol?
 dm= 0.1 #mRNA degredation rate
-ds= 0.001 #rate of chemostat dilution
+ds= 0.01 #rate of chemostat dilution
 death_rate = ds #death rate of bacteria
 kb= 1.0 #rate of mRNA-ribosome binding
 ku= 1.0 #rate of mRNA-ribosome unbinding #was set to one originally
@@ -89,39 +89,37 @@ AA_efficiency = 1/4.6 #how many AA are produced from one ATP so 1/25 means 25 at
 
 
 # set initial conditions
-rmr_0= 0
-em_0= 0
-rmq_0= 0
-rmt_0= 0
-et_0= 0
-rmm_0= 0
-mt_0= 0
-mm_0= 0
-q_0= 0
-si_0= 0
-mq_0= 0
-mr_0= 0
+rmr_0= 0.0
+em_0= 0.0
+rmq_0= 0.0
+rmt_0= 0.0
+et_0= 0.0
+rmm_0= 0.0
+mt_0= 0.0
+mm_0= 0.0
+q_0= 0.0
+si_0= 0.0
+mq_0= 0.0
+mr_0= 0.0
 r_0= 10.0
 a_0= 1000.0
-NH4_0 = 0 #num of ammonia particles fixed by nitrogenase
-nit_0 = 0#num nitrogenase proteins
-nit_mrna_0 = 0 #num of nitrogenase coding mRNA molecules
-nit_mrna_ribo_0 = 0#num of nitrogenase mRNA-ribosome complexes
+NH4_0 = 0.0 #num of ammonia particles fixed by nitrogenase
+nit_0 = 0.0 #num nitrogenase proteins
+nit_mrna_0 = 0.0 #num of nitrogenase coding mRNA molecules
+nit_mrna_ribo_0 = 0.0#num of nitrogenase mRNA-ribosome complexes
 s_out = 1e5 #external substrate
-exported_0= 0#total amount of NH4 exported
-N_0 = 1 #num of bacteria cells to start with
-AA_0 = 9634500.0 #9.6e8 #num of amino acids to start with
-AA_prot_0 = 0
-AA_mrna_0=0
-AA_mrna_ribo_0=0
+exported_0= 0.0#total amount of NH4 exported
+N_0 = 1.0 #num of bacteria cells to start with
+AA_0 = 0.0#9634500.0 #9.6e8 #num of amino acids to start with
+AA_prot_0 = 0.0
+AA_mrna_0=0.0
+AA_mrna_ribo_0=0.0
 
 init= [s_out,rmr_0,em_0,rmq_0,rmt_0,et_0,rmm_0,
     mt_0,mm_0,q_0,si_0,mq_0,mr_0,r_0,
     NH4_0,nit_mrna_0,nit_mrna_ribo_0,nit_0,exported_0,N_0,a_0, AA_0, AA_prot_0,AA_mrna_0,AA_mrna_ribo_0]
 
 
-
-# time1 =  1e5#ARGS[1]
 println("Please input how many timesteps you would like this initial burn in phase to be (10000 recommended)")
 time1= parse(Float64,readline(stdin))
 println("initializing burn in 1")

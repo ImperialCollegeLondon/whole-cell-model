@@ -23,7 +23,7 @@ colnames(sorted_data)= c("S_external 1","ribo mrna comp 2","metab enzyme 3","hou
 melted_data<- melt(sorted_data, id.var="timestep")
 melted_data['log_molecules']= log(melted_data['value']+0.1)
 
-plt = ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))
+plt = ggplot(data = melted_data, aes(x = timestep, y = log(value)))+geom_line(aes(color = variable))
 plt2=ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))
 plt
 
