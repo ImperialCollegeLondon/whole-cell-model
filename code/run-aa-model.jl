@@ -50,14 +50,14 @@ Km= 1.0e3 #1.0e4 #half maximal enzymatic threshold (for michealas menton kinetic
 
 
 Km_nit = 0.0#Km #0.18 #half maximal enzymatic threshold for nitrogenase. from Barney, Yurth et al. 2009
-Km_AA = 0.0#1#half maximal threshold for the amino acid making protein. need to look this up!
+Km_AA = 100.0 #half maximal threshold for the amino acid making protein. need to look this up!
 
 
 we= 4.139172187824451#max enzyme mRNA transcription rate
 wr= 929.9678874564831 #rate of transcription of ribosomal protein mRNAs
 wq= 948.9349882947897 #rate of transcription of housekeeping protein mRNAs
 v_nit= 0.0#900 #rate of transcription of nitrogenase coding mRNAs
-w_AA= 0#10 #rate of transcription of AA making protein
+w_AA= 900.0 #rate of transcription of AA making protein
 ############################################################
 ############need to look this ^ up!#########################
 ############################################################
@@ -77,6 +77,12 @@ kb= 1.0 #rate of mRNA-ribosome binding
 ku= 1.0 #rate of mRNA-ribosome unbinding #was set to one originally
 # f= cl*k_cm #chloramphenical level * binding rate = inhibition rate?
 # rates= [b,dm,kb,ku,f]
+
+k_ribo_a = 0.01
+k_ribo_AA= 0.01
+k_ribo_a_AA = 0.01
+k_ribo_AA_a = 1000.0
+
 
 AA_bind_rate = 0.5
 atp_bind_rate = 0.5
@@ -103,14 +109,14 @@ mq_0= 0.0
 mr_0= 0.0
 r_0= 10.0
 a_0= 1000.0
-NH4_0 = 0.0 #num of ammonia particles fixed by nitrogenase
+NH4_0 = 1000.0 #num of ammonia particles fixed by nitrogenase
 nit_0 = 0.0 #num nitrogenase proteins
 nit_mrna_0 = 0.0 #num of nitrogenase coding mRNA molecules
 nit_mrna_ribo_0 = 0.0#num of nitrogenase mRNA-ribosome complexes
-s_out = 1e5 #external substrate
+s_out = 10e10 #external substrate
 exported_0= 0.0#total amount of NH4 exported
 N_0 = 1.0 #num of bacteria cells to start with
-AA_0 = 0.0#9634500.0 #9.6e8 #num of amino acids to start with
+AA_0 = 1000.0 #9.6e8 #num of amino acids to start with
 AA_prot_0 = 0.0
 AA_mrna_0=0.0
 AA_mrna_ribo_0=0.0
@@ -124,7 +130,7 @@ println("Please input how many timesteps you would like this initial burn in pha
 time1= parse(Float64,readline(stdin))
 println("initializing burn in 1")
 # println(time1)
-problm = ODEProblem(model_AA,init,(0.,time1))
+problm = ODEProblem(model_AA3,init,(0.,time1))
 println("burn in 1 in progress")
 solved = solve(problm)
 # solved = solve(model_AA, Rodas4(),reltol=1e-8,abstol=1e-8)
@@ -133,6 +139,16 @@ solved = solve(problm)
 # solved = solve(problm, CVODE_BDF())
 println("burn in 1 completed")
 
+if model_type == string('r')
+    df1= DataFrame(solved)
+    #df2= DataFrame(solved2)
+    #dfs = [df1,df2]
+    #output= DataFrame(Pandas.concat(dfs))
+    Pandas.to_csv(df1, "reduced-model-output.csv")
+    println("output of reduced model saved as reduced-model-output.csv Thanks for running the model!")
+return()
+return()
+end
 
 println("Please input how many timesteps you would like the second burn in phase to be (10000 recommended)")
 input2= parse(Float64,readline(stdin))
@@ -140,21 +156,14 @@ time2 = time1 + input2
 endstate = size(solved,2)
 init2 =solved[endstate]
 println("initializing burn in 2")
+#global(et) = 1.0 trying to set transporter protein to 1 for the multiscale model. In 
+#andrea's paper they set this to 1 to induce a lag in cell growth
 problm2 = ODEProblem(model_AA2,init2,(time1,time2))
 println("burn in 2 in progress")
 solved2 = solve(problm2)
 println("burn in 2 complete")
 
 
-if model_type == string('r')
-    df1= DataFrame(solved)
-    df2= DataFrame(solved2)
-    dfs = [df1,df2]
-    output= DataFrame(Pandas.concat(dfs))
-    Pandas.to_csv(output, "reduced-model-output.csv")
-    println("output of reduced model saved as reduced-model-output.csv Thanks for running the model!")
-exit()
-end
 
 println("Please input how many timesteps you would like the amino acid model to run (10000+ recommended)")
 
