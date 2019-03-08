@@ -130,32 +130,24 @@ println("Please input how many timesteps you would like this initial burn in pha
 time1= parse(Float64,readline(stdin))
 println("initializing burn in 1")
 # println(time1)
-problm = ODEProblem(model_AA3,init,(0.,time1))
-println("burn in 1 in progress")
+#problm = ODEProblem(model_AA3,init,(0.,time1))
+#println("running AA model with no cell growth or nitrogenase")
+#the line above runs the single cell model with AA. no cell growth or nitrogenase
+ 
+problm = ODEProblem(model_AA,init,(0.,time1))
+println("running regular burn in with no additions")
 solved = solve(problm)
-# solved = solve(model_AA, Rodas4(),reltol=1e-8,abstol=1e-8)
-# solved = solve(problm, ode45())
-# solved = solve(problm, Tsit5())
-# solved = solve(problm, CVODE_BDF())
 println("burn in 1 completed")
 
-if model_type == string('r')
-    df1= DataFrame(solved)
-    #df2= DataFrame(solved2)
-    #dfs = [df1,df2]
-    #output= DataFrame(Pandas.concat(dfs))
-    Pandas.to_csv(df1, "reduced-model-output.csv")
-    println("output of reduced model saved as reduced-model-output.csv Thanks for running the model!")
-return()
-return()
-end
 
 println("Please input how many timesteps you would like the second burn in phase to be (10000 recommended)")
 input2= parse(Float64,readline(stdin))
 time2 = time1 + input2
 endstate = size(solved,2)
 init2 =solved[endstate]
-println("initializing burn in 2")
+println("setting transporter protein to 1")
+init2[6]=1 #this is to replicate andrea's multilevel model. setting the transporters back to 1 induces a lag in population growth
+println("running cell growth section")
 #global(et) = 1.0 trying to set transporter protein to 1 for the multiscale model. In 
 #andrea's paper they set this to 1 to induce a lag in cell growth
 problm2 = ODEProblem(model_AA2,init2,(time1,time2))
@@ -163,6 +155,18 @@ println("burn in 2 in progress")
 solved2 = solve(problm2)
 println("burn in 2 complete")
 
+
+if model_type == string('r')
+    df1= DataFrame(solved)
+    df2= DataFrame(solved2)
+    dfs = [df1,df2]
+    output= DataFrame(Pandas.concat(dfs))
+    Pandas.to_csv(output, "reduced-model-output.csv")
+    println("output of reduced model saved as reduced-model-output.csv Thanks for running the model!")
+    println("press ctrl+c now to exit.")
+return()
+return()
+end
 
 
 println("Please input how many timesteps you would like the amino acid model to run (10000+ recommended)")

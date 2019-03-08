@@ -196,7 +196,7 @@ function model_AA2(results,y,p,t)
 #    end
 
     ##################################################################
-    results[1]= ((-et*vt*s_out/(Kt + abs(s_out)))*N)-ds*s_out +(export_rate*NH4*50)
+    results[1]= ((-et*vt*s_out/(Kt + abs(s_out)))*N)-ds*s_out +(export_rate*NH4*50) +10e8
     if s_out <0.00000001 s_out=0.00000001 end
     #change in amount of substrate, a proxy for amount of host plant
     results[2]= kb*r*mr-ku*rmr-(gam/nr)*rmr-lam*rmr#-dp*r
@@ -314,7 +314,6 @@ function model_AA3(results,y,p,t)
 
     gam= (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA) #updated gamma equation that uses both ATP and AA
 
-
     ttrate= (rmq + rmr + rmt + rmm + nit_mrna_ribo+AA_mrna_ribo)*gam #total translation rate (sum of the mRNA/ribosome complexes times translation rate)
     #lam= ttrate/(M-AA) #lambda, the growth rate/dilution rate, the ratio of total translation rate to total cell mass
     lam= ttrate/M
@@ -337,6 +336,10 @@ function model_AA3(results,y,p,t)
     AA_vo = ((k_cat_AA*a*NH4)/k_a_NH4*k_a)/(1+((1+(AA/k_a_AA)+(NH4/k_a_NH4)))*(a/k_a)+(1+(AA/k_NH4_AA)*(NH4/k_NH4)))
 
     new_AA = AA_vo*AA_prot
+
+    open("../data/gamma-file-$k_cat_AA-$k_a_NH4-$k_a-$k_NH4-$k_a_AA-$k_NH4_AA-$k_ribo_a-$k_ribo_AA-$k_ribo_a_AA-$k_ribo_AA_a.csv","a") do f
+    write(f, "\n$gam, $AA, $a")
+    end
 
 #     Kgamma = 3.0e8
 #     k_AA= 100.0 #this constant...
