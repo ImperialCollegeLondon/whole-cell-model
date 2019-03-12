@@ -196,7 +196,8 @@ function model_AA2(results,y,p,t)
 #    end
 
     ##################################################################
-    results[1]= ((-et*vt*s_out/(Kt + abs(s_out)))*N)-ds*s_out +(export_rate*NH4*50) +10e8
+    #results[1]= ((-et*vt*s_out/(Kt + abs(s_out)))*N)-ds*s_out #+(export_rate*NH4*50)
+    results[1]= ((-et*vt*s_out/(Kt + s_out))*N)-ds*s_out #+(export_rate*NH4*50) #+10e8
     if s_out <0.00000001 s_out=0.00000001 end
     #change in amount of substrate, a proxy for amount of host plant
     results[2]= kb*r*mr-ku*rmr-(gam/nr)*rmr-lam*rmr#-dp*r

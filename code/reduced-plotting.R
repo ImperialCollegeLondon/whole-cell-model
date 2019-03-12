@@ -11,8 +11,8 @@ library(cowplot)
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a1.0.csv")
 # raw_data = read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a100.0k_ribo_AA100.0k_ribo_a_AA100.0k_ribo_AA_a100.0.csv")
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a10000.0.csv")
-raw_data= read.csv("../data/param-sweep-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-100.0.csv")
-# raw_data= read.csv("reduced-model-output.csv")
+# raw_data= read.csv("../data/param-sweep-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-100.0.csv")
+raw_data= read.csv("reduced-model-output.csv")
 
 raw_data = raw_data[,-c(1)]
 sorted_data= raw_data[,order(names(raw_data))]
@@ -28,7 +28,7 @@ plt = ggplot(data = melted_data, aes(x = timestep, y = log(value)))+geom_line(ae
 # plt2=ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))
 plt
 # plt2
-plot(type = "l",y=sorted_again$`22AA`,x= sorted_again$timestep)#, xlim = c(19800,21000))#, main = "NH4 constant at 1000. gamma modded: k_ribo_a = 0.01 k_ribo_AA= 0.01 k_ribo_a_AA = 0.01 k_ribo_AA_a = 1000.\n AA_prot_params: k_AA= 1000.0 k_cat_AA= 1000.0 k_a_NH4 = 1000.0 k_a = 1000.0 k_NH4 = 1000.0 k_a_AA = 0.01 k_NH4_AA= 0.01")
+plot(type = "l",y=sorted_again$`20num cells`,x= sorted_again$timestep, xlim = c(19800,21000), ylab = "num of cells", xlab = "timestep")#, main = "NH4 constant at 1000. gamma modded: k_ribo_a = 0.01 k_ribo_AA= 0.01 k_ribo_a_AA = 0.01 k_ribo_AA_a = 1000.\n AA_prot_params: k_AA= 1000.0 k_cat_AA= 1000.0 k_a_NH4 = 1000.0 k_a = 1000.0 k_NH4 = 1000.0 k_a_AA = 0.01 k_NH4_AA= 0.01")
 # tail((sorted_again$`21ATP`))
 
 plt3 = ggplot(data = melted_data, aes(x = timestep, y = log(value+0.1))) +theme(legend.position = "none")+geom_point(aes(color = variable))+ facet_wrap(~ variable, ncol = 5)
