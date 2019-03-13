@@ -72,7 +72,7 @@ nx= 300.0 #length of non ribosomal proteins (num amino acids per protein)
 # b= 0 #maybe inhibition efficiency by chloramphenicol?
 dm= 0.1 #mRNA degredation rate
 ds= 0.01 #rate of chemostat dilution
-death_rate = ds #death rate of bacteria
+death_rate = 0.0 #death rate of bacteria
 kb= 1.0 #rate of mRNA-ribosome binding
 ku= 1.0 #rate of mRNA-ribosome unbinding #was set to one originally
 # f= cl*k_cm #chloramphenical level * binding rate = inhibition rate?

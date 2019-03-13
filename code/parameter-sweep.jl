@@ -82,8 +82,8 @@ nit_mrna_ribo_0 = 0.0#num of nitrogenase mRNA-ribosome complexes
 s_out = 10e10 #external substrate
 exported_0= 0.0#total amount of NH4 exported
 N_0 = 1.0 #num of bacteria cells to start with
-AA_0 = 1000.0 #9.6e8 #num of amino acids to start with
-AA_prot_0 = 0.0
+AA_0 = 20000.0#9.6e8 #num of amino acids to start with
+AA_prot_0 = 1.0
 AA_mrna_0=0.0
 AA_mrna_ribo_0=0.0
 
@@ -92,39 +92,37 @@ init= [s_out,rmr_0,em_0,rmq_0,rmt_0,et_0,rmm_0,
     NH4_0,nit_mrna_0,nit_mrna_ribo_0,nit_0,exported_0,N_0,a_0, AA_0, AA_prot_0,AA_mrna_0,AA_mrna_ribo_0]
 
 
-for i1 in (0.1,1.0,10.0,100.0,1000.0)
+for i1 in (0.1,10.0,1000.0)
     global(k_cat_AA)= i1
-    for i2 in (0.1,1.0,10.0,100.0,1000.0)
-        global(k_a_NH4)=i2
-        for i3 in (0.1,1.0,10.0,100.0,1000.0)
+    for i2 in (0.1,10.0,1000.0)
+        global(k_a_NH4)=i2 #this one can be fixed maybe
+        for i3 in (0.1,10.0,1000.0)
             global(k_a)= i3
-            for i4 in (0.1,1.0,10.0,100.0,1000.0)
+            for i4 in (0.1,10.0,1000.0)
                 global(k_NH4)= i4
-                for i5 in (0.1,1.0,10.0,100.0,1000.0)
+                for i5 in (0.1,10.0,1000.0)
                     global(k_a_AA)=i5
-                    for i6 in (0.1,1.0,10.0,100.0,1000.0)
+                    for i6 in (0.1,10.0,1000.0)
                         global(k_NH4_AA)=i6
-			println("current k_NH4 value is $i6")
-			for i7 in (0.1,1.0,10.0,100.0,1000.0)
+			#println("current k_NH4 value is $i6")
+			for i7 in (0.1,10.0,1000.0)
  	                       global(k_ribo_a)=i7
-				for i8 in (0.1,1.0,10.0,100.0,1000.0)
- 		                       global(k_ribo_AA)=i8
-					for i9 in (0.1,1.0,10.0,100.0,1000.0)
-                			        global(k_ribo_a_AA)=i9
-						for i10 in (0.1,1.0,10.0,100.0,1000.0)
-                				        global(k_ribo_AA_a)=i10
+				for i8 in (0.1,10.0,1000.0)
+                		        global(k_ribo_a_AA)=i8
+					for i9 in (0.1,10.0,1000.0)
+                			        global(k_ribo_AA_a)=i9
 
 
 
 
-time1= 10000.0
+time1= 25000.0
 problm = ODEProblem(AA_simple,init,(0.,time1))
 #the line above runs the single cell model with AA. no cell growth or nitrogenase
 solved = solve(problm)
 df1= DataFrame(solved)
-Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9-$i10.csv")
-println("success!")
-#    open("../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9-$i10.csv","w") do f
+Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv")#"testfile.csv"
+println("param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9 was a success!")
+#    open("../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv","w") do f
  #   write(f,"AA, ATP, num_cells\n")
  #   end
 
@@ -138,7 +136,7 @@ end
 end
 end
 end
-end
+#end
 
 
 
