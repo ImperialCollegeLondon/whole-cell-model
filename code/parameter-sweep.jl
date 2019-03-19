@@ -97,20 +97,19 @@ for i1 in (0.1,10.0,1000.0)
     for i2 in (0.1,10.0,1000.0)
         global(k_a_NH4)=i2 #this one can be fixed maybe
         for i3 in (0.1,10.0,1000.0)
-            global(k_a)= i3
-            for i4 in (0.1,10.0,1000.0)
+            global(k_a)= i3 # k_a set to 1000. maybe try higher in future
+            for i4 in (1000.0)
                 global(k_NH4)= i4
                 for i5 in (0.1,10.0,1000.0)
                     global(k_a_AA)=i5
                     for i6 in (0.1,10.0,1000.0)
                         global(k_NH4_AA)=i6
-			#println("current k_NH4 value is $i6")
-			for i7 in (0.1,10.0,1000.0)
- 	                       global(k_ribo_a)=i7
-				for i8 in (0.1,10.0,1000.0)
-                		        global(k_ribo_a_AA)=i8
-					for i9 in (0.1,10.0,1000.0)
-                			        global(k_ribo_AA_a)=i9
+						for i7 in (0.1,10.0,1000.0)
+							global(k_ribo_a)=i7
+							for i8 in (1.0)
+								global(k_ribo_a_AA)=i8
+								for i9 in (1.0)
+									global(k_ribo_AA_a)=i9
 
 
 
