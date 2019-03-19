@@ -28,7 +28,7 @@ Kt= 1.0e3 #the half maximal nutrient import threshold, molecules per cell minute
 Km= 1.0e3 #half maximal enzymatic threshold (for michealas menton kinetics)
 
 Km_nit = 0.0#Km #0.18 #half maximal enzymatic threshold for nitrogenase. from Barney, Yurth et al. 2009
-Km_AA = 100.0 #half maximal threshold for the amino acid making protein. need to look this up!
+#Km_AA = 100.0 #half maximal threshold for the amino acid making protein. need to look this up!
 
 
 we= 4.139172187824451#max enzyme mRNA transcription rate
@@ -120,7 +120,7 @@ problm = ODEProblem(AA_simple,init,(0.,time1))
 #the line above runs the single cell model with AA. no cell growth or nitrogenase
 solved = solve(problm)
 df1= DataFrame(solved)
-Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv")#"testfile.csv"
+Pandas.to_csv(df1, "../data/$i1/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv")#"testfile.csv"
 println("param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9 was a success!")
 #    open("../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv","w") do f
  #   write(f,"AA, ATP, num_cells\n")

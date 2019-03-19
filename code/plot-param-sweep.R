@@ -1,5 +1,5 @@
-rm(list=ls())
-graphics.off()
+# rm(list=ls())
+# graphics.off()
 
 library(ggplot2)
 library(reshape2)
@@ -8,7 +8,7 @@ library(cowplot)
 library(R.utils)
 
 
-important_data <- read.csv("param-sweep-results.csv")
+important_data <- read.csv("param-sweep2-results.csv")
 important_data<- important_data[-1]
 # important_data$log_AA <- log(important_data$AminoAcid)+0.1
 # important_data$log_atp <- log(important_data$ATP)+0.1
@@ -21,13 +21,25 @@ plt <- ggplot(data = non_neg_data, aes(x = k_ribo_AA_a, y = k_ribo_a_AA, colour 
 plt
 # plot(x = important_data$k_ribo_AA_a, y = important_data$k_ribo_a_AA, col = important_data$AminoAcid)
 plot(x = non_neg_data$AminoAcid, y = non_neg_data$ATP)
-plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP)
-hist(x = non_neg_data$log_ATP)
-hist(x = non_neg_data$log_AA)
+plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP, col = non_neg_data$k_a_AA)
+plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP, col = non_neg_data$k_a, main = "colored by k_a")
 
 
+
+df1<- subset(non_neg_data, non_neg_data$k_a== '0.1')
+df2<- subset(non_neg_data, non_neg_data$k_a== '10.0')
+df3<- subset(non_neg_data, non_neg_data$k_a== '1000.0')
+plot(x = df1$log_AA, y = df1$log_ATP, main = "k_a = 0.1")
+plot(x = df2$log_AA, y = df2$log_ATP, main = "k_a = 10")
+plot(x = df3$log_AA, y = df3$log_ATP, main = "k_a = 1000", col = df3$k_a_AA)
+
+
+hist(x = non_neg_data$ATP)
+hist(x = non_neg_data$AminoAcid)
 
 boxplot(non_neg_data$log_AA ~ non_neg_data$log_ATP)
+
+
 
 # require(graphics); require(grDevices)
 # x  <- as.matrix(mtcars)

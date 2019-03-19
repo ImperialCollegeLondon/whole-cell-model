@@ -11,8 +11,8 @@ library(reshape2)
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a1.0.csv")
 # raw_data = read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a100.0k_ribo_AA100.0k_ribo_a_AA100.0k_ribo_AA_a100.0.csv")
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a10000.0.csv")
-# raw_data= read.csv("../data/param-sweep-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-100.0.csv")
-raw_data= read.csv("testfile.csv")
+raw_data= read.csv("../data/0.1/param-sweep-0.1-0.1-1000.0-0.1-0.1-0.1-1000.0-1000.0-10.0.csv")
+# raw_data= read.csv("testfile.csv")
 # raw_data<- read.csv("reduced-model-output.csv")
 
 raw_data = raw_data[,-c(1)]
