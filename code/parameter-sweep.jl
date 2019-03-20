@@ -106,9 +106,9 @@ for i1 in (0.1,10.0,1000.0)
                         global(k_NH4_AA)=i6
 						for i7 in (0.1,10.0,1000.0)
 							global(k_ribo_a)=i7
-							for i8 in (1.0)
+							for i8 in (0.1)
 								global(k_ribo_a_AA)=i8
-								for i9 in (1.0)
+								for i9 in (0.1)
 									global(k_ribo_AA_a)=i9
 
 
@@ -117,10 +117,11 @@ for i1 in (0.1,10.0,1000.0)
 time1= 25000.0
 problm = ODEProblem(AA_simple,init,(0.,time1))
 #the line above runs the single cell model with AA. no cell growth or nitrogenase
+println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9")
 solved = solve(problm)
 df1= DataFrame(solved)
 Pandas.to_csv(df1, "../data/$i1/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv")#"testfile.csv"
-println("param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9 was a success!")
+
 #    open("../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv","w") do f
  #   write(f,"AA, ATP, num_cells\n")
  #   end
