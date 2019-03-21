@@ -11,7 +11,7 @@ library(reshape2)
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a1.0.csv")
 # raw_data = read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a100.0k_ribo_AA100.0k_ribo_a_AA100.0k_ribo_AA_a100.0.csv")
 # raw_data= read.csv("../data/high-AA-results-k_AA_0.01k_a_NH40.01k_a0.01k_NH40.01k_a_AA0.01k_NH4_AA0.01k_ribo_a0.01k_ribo_AA0.01k_ribo_a_AA0.01k_ribo_AA_a10000.0.csv")
-raw_data= read.csv("../data/0.1/param-sweep-0.1-0.1-1000.0-0.1-0.1-0.1-1000.0-1000.0-10.0.csv")
+raw_data= read.csv("../data/0.1/param-sweep-0.1-0.1-0.1-1000.0-0.1-0.1-0.1-0.1-0.1.csv")
 # raw_data= read.csv("testfile.csv")
 # raw_data<- read.csv("reduced-model-output.csv")
 
@@ -24,6 +24,8 @@ colnames(sorted_again)= c("timestep","1S_external","2ribo mrna comp","3metab enz
 
 melted_data<- melt(sorted_again, id.var="timestep")
 melted_data['log_molecules']= log(melted_data['value']+0.1)
+
+sd(sorted_again$`22AA`)
 
 # plt = ggplot(data = melted_data, aes(x = timestep, y = log(value)))+geom_line(aes(color = variable))
 # plt2=ggplot(data = melted_data, aes(x = timestep, y = log_molecules))+geom_line(aes(color = variable))

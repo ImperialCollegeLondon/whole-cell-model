@@ -54,11 +54,13 @@ death_rate = ds #death rate of bacteria
 kb= 1.0 #rate of mRNA-ribosome binding
 ku= 1.0 #rate of mRNA-ribosome unbinding #was set to one originally
 
+#params for gamma equation
 #k_ribo_a = 0.01
-#k_ribo_AA= 0.01
-#k_ribo_a_AA = 0.01
-#k_ribo_AA_a = 1000.0
+k_ribo_a_AA = 10.0
+k_ribo_AA_a = 10.0
 
+#params for amino acid protein equation
+k_a = 1000.0
 
 # set initial conditions
 rmr_0= 0.0
@@ -92,51 +94,51 @@ init= [s_out,rmr_0,em_0,rmq_0,rmt_0,et_0,rmm_0,
     NH4_0,nit_mrna_0,nit_mrna_ribo_0,nit_0,exported_0,N_0,a_0, AA_0, AA_prot_0,AA_mrna_0,AA_mrna_ribo_0]
 
 
+time1= 10000.0
+
 for i1 in (0.1,10.0,1000.0)
     global(k_cat_AA)= i1
-    for i2 in (0.1,10.0,1000.0)
-        global(k_a_NH4)=i2 #this one can be fixed maybe
-        for i3 in (0.1,10.0,1000.0)
-            global(k_a)= i3 # k_a set to 1000. maybe try higher in future
-            for i4 in (1000.0)
-                global(k_NH4)= i4
-                for i5 in (0.1,10.0,1000.0)
-                    global(k_a_AA)=i5
-                    for i6 in (0.1,10.0,1000.0)
-                        global(k_NH4_AA)=i6
-						for i7 in (0.1,10.0,1000.0)
-							global(k_ribo_a)=i7
-							for i8 in (0.1)
-								global(k_ribo_a_AA)=i8
-								for i9 in (0.1)
-									global(k_ribo_AA_a)=i9
+    for i2 in (10.0,1000.0)
+        global(k_a_NH4)=i2
+            for i3 in (10.0,1000.0,0.1)
+                global(k_NH4)= i3
+                for i4 in (0.1,10.0,1000.0)
+                    global(k_a_AA)=i4
+                    for i5 in (0.1,10.0,1000.0)
+                        global(k_NH4_AA)=i5
+						for i6 in (0.1,10.0,1000.0)
+							global(k_ribo_a)=i6
 
 
-
-
-time1= 25000.0
 problm = ODEProblem(AA_simple,init,(0.,time1))
 #the line above runs the single cell model with AA. no cell growth or nitrogenase
-println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9")
-solved = solve(problm)
-df1= DataFrame(solved)
-Pandas.to_csv(df1, "../data/$i1/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv")#"testfile.csv"
+println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
+start_time = time()
 
-#    open("../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6-$i7-$i8-$i9.csv","w") do f
- #   write(f,"AA, ATP, num_cells\n")
- #   end
-
-
+while time() - start_time < 100.0
+#~ 	println("time")
+	solved = solve(problm)
+	df1= DataFrame(solved)
+	Pandas.to_csv(df1, "../data/$i1/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6.csv")#"testfile.csv"
+	println("model run $i1-$i2-$i3-$i4-$i5-$i6 successful")
+	break
 end
-end
-end
-end
-end
-end
-end
-end
-end
-#end
 
 
+
+
+
+end
+end
+end
+end
+end
+end
+
+
+#~ function test_time(n)
+#~ 	A = rand(n,n)
+#~ 	B = rand(n)
+#~ 	@elapsed A\B
+#~ end
 

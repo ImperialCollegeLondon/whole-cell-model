@@ -27,7 +27,7 @@ plt <- ggplot(data = non_neg_data, aes(x = k_ribo_AA_a, y = k_ribo_a_AA, colour 
 plt
 # plot(x = important_data$k_ribo_AA_a, y = important_data$k_ribo_a_AA, col = important_data$AminoAcid)
 plot(x = non_neg_data$AminoAcid, y = non_neg_data$ATP)
-plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP, col = non_neg_data$k_ribo_a_AA, main = "colored by k_NH4_AA")
+plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP, col = non_neg_data$k_a_NH4, main = "colored by k_a_NH4")
 plot(x = non_neg_data$log_AA, y = non_neg_data$log_ATP, col = non_neg_data$k_a, main = "colored by k_a")
 
 
@@ -37,7 +37,7 @@ df2<- subset(non_neg_data, non_neg_data$k_a== '10.0')
 df3<- subset(non_neg_data, non_neg_data$k_a== '1000.0')
 plot(x = df1$log_AA, y = df1$log_ATP, main = "k_a = 0.1")
 plot(x = df2$log_AA, y = df2$log_ATP, main = "k_a = 10")
-plot(x = df3$log_AA, y = df3$log_ATP, main = "k_a = 1000", col = df3$k_ribo_AA_a)
+plot(x = df3$log_AA, y = df3$log_ATP, main = "k_a_NH4 = 1000", col = df3$k_a_NH4)
 
 
 hist(x = non_neg_data$ATP)
