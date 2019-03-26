@@ -26,34 +26,34 @@ function AA_simple(results,y,p,t)
     AA_mrna=y[24]#num of mRNA coding for AA making protein
     AA_mrna_ribo=y[25]#num of mRNA coding for AA making protein bound to ribosomes
 
-    if s_out <0.000001 s_out=0.0 end
-    if rmr<0.000001 rmr= 0.0 end
-    if em<0.000001 em=0.0 end
-    if rmq<0.000001 rmq=0.0 end
-    if rmt<0.000001 rmt=0.0 end
-    if et<0.000001 et=0.0 end
-    if rmm<0.000001 rmm=0.0 end
-    if mt<0.000001 mt=0.0 end
-    if mm<0.000001 mm=0.0 end
-    if q<0.000001 q=0.0 end
-    if si<0.000001 si=0.0 end
-    if mq<0.000001 mp=0.0 end
-    if mr<0.000001 mr=0.0 end
-    if r < 0.000001 r = 0.0 end    
-    if NH4<0.000001 NH4=0.0 end
-    if nit_mrna<0.000001 nit_mrna=0.0 end
-    if nit_mrna_ribo<0.000001 nit_mrna_ribo=0.0 end
-    if nit<0.000001 nit=0.0 end
-    if N<0.000001 N=0.0 end
-    if a<0.000001 a=0.0 end
-    if AA<0.000001 AA=0.0 end
-    if AA_prot<0.000001 AA_prot=0.0 end
-    if AA_mrna<0.0000001 AA_mrna=0.0 end    
-    if AA_mrna_ribo<0.000001 AA_mrna_ribo=0.0 end
+    if s_out <0.000001 s_out=0 end
+    if rmr<0.000001 rmr= 0 end
+    if em<0.000001 em=0 end
+    if rmq<0.000001 rmq=0 end
+    if rmt<0.000001 rmt=0 end
+    if et<0.000001 et=0 end
+    if rmm<0.000001 rmm=0 end
+    if mt<0.000001 mt=0 end
+    if mm<0.000001 mm=0 end
+    if q<0.000001 q=0 end
+    if si<0.000001 si=0 end
+    if mq<0.000001 mp=0 end
+    if mr<0.000001 mr=0 end
+    if r < 0.000001 r = 0 end    
+    if NH4<0.000001 NH4=0 end
+    if nit_mrna<0.000001 nit_mrna=0 end
+    if nit_mrna_ribo<0.000001 nit_mrna_ribo=0 end
+    if nit<0.000001 nit=0 end
+    if N<0.000001 N=0 end
+    if a<0.000001 a=0 end
+    if AA<0.000001 AA=0 end
+    if AA_prot<0.000001 AA_prot=0 end
+    if AA_mrna<0.0000001 AA_mrna=0 end    
+    if AA_mrna_ribo<0.000001 AA_mrna_ribo=0 end
 
     #define more constants
-#     Kgamma= gmax/180 #Kgamma is the half maximal translational elongation threshold, gmax is the max rate of translational elongation and Kp is net rate of translation of housekeeping proteins
-    Kgamma = 3.0e8
+     Kgamma= gmax/180 #Kgamma is the half maximal translational elongation threshold, gmax is the max rate of translational elongation and Kp is net rate of translation of housekeeping proteins
+#~     Kgamma = 3.0e8
     #should equal 7 molecules per cell
     #gam= gmax*a/(Kgamma + a) #gamma is the current rate of translational elongation? gmax is max rate of translational elongation and a is ATP (energy)level
 
@@ -67,7 +67,7 @@ function AA_simple(results,y,p,t)
     ttrate= (rmq + rmr + rmt + rmm + nit_mrna_ribo+AA_mrna_ribo)*gam #total translation rate (sum of the mRNA/ribosome complexes times translation rate)
     #lam= ttrate/(M-AA) #lambda, the growth rate/dilution rate, the ratio of total translation rate to total cell mass
     lam= ttrate/M
-    if lam<0.00000001 lam=0.00000001 end
+    #if lam<0.00000001 lam=0.00000001 end
     nucat= em*vm*si/(Km + abs(si)) #nucat is the num of internal substrate molecules used by catabolism. em is the num of molecules of metabolic enzyme, vm is the rate of the metabolic enzyme and si is the internal substrate level
     #this is all over the half maximal metabolic rate threshold plus the internal substrate level
     fixation = 0#vmax_nit*a/(Kgamma +a)

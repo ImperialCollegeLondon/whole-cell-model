@@ -98,9 +98,9 @@ time1= 10000.0
 
 for i1 in (0.1,10.0,1000.0)
     global(k_cat_AA)= i1
-    for i2 in (10.0,1000.0)
+    for i2 in (0.1,10.0,1000.0)
         global(k_a_NH4)=i2
-            for i3 in (10.0,1000.0,0.1)
+            for i3 in (0.1,10.0,1000.0)
                 global(k_NH4)= i3
                 for i4 in (0.1,10.0,1000.0)
                     global(k_a_AA)=i4
@@ -115,7 +115,7 @@ problm = ODEProblem(AA_simple,init,(0.,time1))
 println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
 start_time = time()
 
-while time() - start_time < 100.0
+while time() - start_time < 300.0 #stop the model run if its been running for more than 5 mins
 #~ 	println("time")
 	solved = solve(problm)
 	df1= DataFrame(solved)

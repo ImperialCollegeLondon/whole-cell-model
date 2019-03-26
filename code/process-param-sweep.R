@@ -81,5 +81,5 @@ colnames(important_data)<- c("AminoAcid","ATP","k_cat_AA","k_a_NH4","k_NH4","k_a
 print("all done!")
 
 #need to append to file not overwrite it!!!#
-write.csv(important_data, file = "param-sweep5-results.csv")
+write.csv(important_data, file = "param-sweep6-results.csv")
 

@@ -8,16 +8,16 @@ using Plots
 using Dates
 
 println("Would you like to run the full model or the reduced?")
-println("Please input 'f' or 'r')")
+println("Please input 'f' or 'r1' or 'r2')")
 model_type= string(readline(stdin))
 if model_type == string('f')
 	include("aa-functions.jl")
 	println("running full model")
-elseif model_type == string('r')
+elseif model_type in ("r1","r2")
 	include("reduced-function.jl")
 	println("running reduced model")
 else
-	println("Please input either 'f' or 'r'")
+	println("Please input either 'f' or 'r1' or 'r2'")
 end
 # parameters
 thetar= 426.8693338968694 #ribosome transcription threshold, molecules per cell
@@ -64,7 +64,7 @@ w_AA= 900.0 #rate of transcription of AA making protein
 
 nq= 4 #housekeeping protein autoinhibition Hill coefficient
 nr= 7549.0 #ribosome length (num amino acids)
-ns= 100.0 #0.5 #substrate use effiency
+ns= 0.5 #100.0 #0.5 #substrate use effiency
 nx= 300.0 #length of non ribosomal proteins (num amino acids per protein)
 # parameters= [thetar,k_cm,gmax,cl,thetax,Kt,M,we,Km,vm,nx,Kq,Kp,vt,wr,wq,wp,nq,nr,ns,v_nit]
 
@@ -140,6 +140,16 @@ solved = solve(problm)
 println("burn in 1 completed")
 
 
+if model_type == "r1"
+    df1= DataFrame(solved)
+    filenam= "original-model-output.csv"
+    Pandas.to_csv(df1, filenam)
+    println("output of reduced model saved as $filenam Thanks for running the model!")
+    println("press ctrl+c now to exit.")
+return()
+return()
+end
+
 println("Please input how many timesteps you would like the second burn in phase to be (10000 recommended)")
 input2= parse(Float64,readline(stdin))
 time2 = time1 + input2
@@ -156,7 +166,7 @@ solved2 = solve(problm2)
 println("burn in 2 complete")
 
 
-if model_type == string('r')
+if model_type == string("r2")
     df1= DataFrame(solved)
     df2= DataFrame(solved2)
     dfs = [df1,df2]
