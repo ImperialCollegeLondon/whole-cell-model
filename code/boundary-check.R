@@ -11,23 +11,23 @@ library(R.utils)
 
 good_combos<- as.data.frame(matrix(data = NA, nrow = 0, ncol = 6))
 bad_combos<-as.data.frame(matrix(data = NA, nrow = 0, ncol = 6))
-colnames(good_combos)<- c("k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
-colnames(bad_combos)<- c("k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
-#initalise the two data frames to store the good/bad param combinations
+oss_combos<-as.data.frame(matrix(data = NA, nrow = 0, ncol = 6))
+
+#initalise the two data frames to store the good/bad param combinations as well as those that produce oscillations
 
 
 e=NULL
-for (i1 in c('0.1')){#,'10.0','1000.0')){
-  for (i2 in c('0.1')){#,'10.0','1000.0')){
-    for (i3 in c('0.1')){#,'10.0','1000.0')){
-      for (i4 in c('0.1')){#,'10.0','1000.0')){
-        for (i5 in c('0.1')){#,'10.0','1000.0')){
-          for (i6 in c('0.1')){#,'10.0','1000.0')){
+for (i1 in c('0.1','10.0','1000.0')){
+  for (i2 in c('0.1','10.0','1000.0')){
+    for (i3 in c('0.1','10.0','1000.0')){
+      for (i4 in c('0.1','10.0','1000.0')){
+        for (i5 in c('0.1','10.0','1000.0')){
+          for (i6 in c('0.1','10.0','1000.0')){
             
             
             closeAllConnections()
             filename<- paste("../data/",i1,"/param-sweep-",i1,"-",i2,"-",i3,"-",i4,"-",i5,"-",i6,".csv", sep = "")
-            
+            # print(paste("trying file", filename))
             e<-tryCatch({expr=assign("line_num",countLines(filename))},
                         error = function(e){},
                         warning= function(w){})
@@ -35,8 +35,18 @@ for (i1 in c('0.1')){#,'10.0','1000.0')){
             
             if (typeof(e[1]) != "integer" ){
               # print("file doesnt exist")
+              current_vals<- data.frame(i1,i2,i3,i4,i5,i6)
+              bad_combos <- rbind(bad_combos,current_vals, stringsAsFactors= FALSE)
+              print("real bad one!")
               next
             }else{
+              if (line_num> 25000){#if there are more rows than timepoints that means this parameter combination causes oscillations
+                current_vals<- data.frame(i1,i2,i3,i4,i5,i6)
+                oss_combos <- rbind(oss_combos,current_vals, stringsAsFactors= FALSE)
+                print("adding to oss")
+                next
+              }
+              
               
               # raw_data<- read.csv(filename,header = F, skip = (line_num-1))
               # reads in only the last line of data to use less memory
@@ -53,16 +63,21 @@ for (i1 in c('0.1')){#,'10.0','1000.0')){
               #sorts and names all the columns properly
               
               end_min<- min(tail(sorted_data))
+              print(paste("current min val is", end_min))
               if (end_min < 1){
                 #add parameter combination to exclusion table
                 current_vals<- data.frame(i1,i2,i3,i4,i5,i6)
                 bad_combos <- rbind(bad_combos,current_vals, stringsAsFactors= FALSE)
+                print("adding to bad")
     
               }else{
                 #add parameter combination to good table
                 current_vals<- data.frame(i1,i2,i3,i4,i5,i6)
                 good_combos <- rbind(good_combos,current_vals, stringsAsFactors= FALSE)
-              }
+                print("adding to good")
+              }#need to check for oscillations somehow
+              #####################################################################################
+              #####################################################################################
               
               # melted_data<- melt(sorted_data, id.var="timestep")
               # melted_data['log_molecules']= log10(melted_data['value']+0.1) #puts data into long format for ggplot
@@ -76,34 +91,20 @@ for (i1 in c('0.1')){#,'10.0','1000.0')){
               next
             }
             
-            # raw_data<- read.csv("../data/param-sweep-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-10.0-100.0.csv")#, skip = (line_num-5))
-            # raw_data = raw_data[,-c(1)]
-            # 
-            # 
-            # unsorted_colnames<- names(raw_data)
-            # shortened_colnames<-substring(unsorted_colnames,6) 
-            
-            # sorted_data= raw_data[,order(names(raw_data))]
-            
-            # raw_data<- read.csv("../data/param-sweep-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-10.0-100.0.csv",header = F, skip = (line_num-1))
-            # raw_data = raw_data[,-c(1)]
-            # colnames(raw_data)<- shortened_colnames
-            # sorted_data<-raw_data[,c("tamp","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25")]
-            # colnames(sorted_data)= c("timestep","1S_external","2ribo mrna comp","3metab enzyme","4housekpng mrna comp","5trans mrna comp","6transporter prot","7metab mrna comp","8trans mrna","9metab mrna","10housekepng prot","11si","12housekpng mrna","13ribo mrna","14free ribo","15NH4 int","16nit mrna","17nit mrna comp","18nitrogenase","19cumulative NH4","20num cells","21ATP","22AA","23AA prot","24AA mRNA","25AA mrna comp")
-            
-            # melted_data<- melt(sorted_again, id.var="timestep")
-            # melted_data['log_molecules']= log(melted_data['value']+0.1)
-            
-            # param_values<- 
-            
-            # important_data <- data.frame(raw_data$V14,raw_data$V23)
-            # colnames(important_data)<- c("AminoAcid","ATP")
             
           }}}}}}
-# colnames(important_data)<- c("AminoAcid","ATP","k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
 
 print("all done!")
 
+colnames(good_combos)<- c("k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
+colnames(bad_combos)<- c("k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
+colnames(oss_combos)<- c("k_cat_AA","k_a_NH4","k_NH4","k_a_AA","k_NH4_AA","k_ribo_a")
 #need to append to file not overwrite it!!!#
 # write.csv(important_data, file = "param-sweep6-results.csv")
+write.csv(good_combos, file = "the-good.csv")
+write.csv(bad_combos, file = "the-bad.csv")
+write.csv(oss_combos, file = "the-ugly.csv")
+
+
+
 
