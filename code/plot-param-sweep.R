@@ -11,12 +11,37 @@ library(R.utils)
 #use thresholds. try to increase k_cat_AA as wel as increasing k_a to keep ratio roughly the same
 
 
-important_data <- read.csv("param-sweep5-results.csv")
-important_data<- important_data[-1]
+# important_data <- read.csv("param-sweep5-results.csv")
+# raw_data <- read.csv("../data/0.1/param-sweep-0.1-0.1-0.1-0.1-1000.0-0.1.csv")#oscillation
+# raw_data <- read.csv("../data/param-sweep-10.0-10.0-10.0-10.0-10.0-10.0.csv")
+raw_data<- read.csv("multilevel-output.csv")
+
+# raw_data<- important_data[-1]
+sorted_data= raw_data[,order(names(raw_data))]
+colnames(sorted_data)<- substring(names(sorted_data),6)
+
+sorted_again<-sorted_data[,c("tamp","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25")]
+colnames(sorted_again)= c("timestep","1S_external","2ribo mrna comp","3metab enzyme","4housekpng mrna comp","5trans mrna comp","6transporter prot","7metab mrna comp","8trans mrna","9metab mrna","10housekepng prot","11si","12housekpng mrna","13ribo mrna","14free ribo","15NH4 int","16nit mrna","17nit mrna comp","18nitrogenase","19cumulative NH4","20num cells","21ATP","22AA","23AA prot","24AA mRNA","25AA mrna comp")
+short_data<- sorted_again[sorted_again$timestep <= 500,]
+
+melted_data<- melt(sorted_again, id.var="timestep")
+melted_short<- melt(short_data, id.var="timestep")
+
+plt1 = ggplot(data = melted_data, aes(x = timestep, y = log10(value+0.1))) +theme(legend.position = "none")+geom_point(aes(color = variable))+ facet_wrap(~ variable, ncol = 5)
+plt1
+
 # important_data$un_ov<- 
 # important_data$log_AA <- log(important_data$AminoAcid)+0.1
 # important_data$log_atp <- log(important_data$ATP)+0.1
-plot(log10(important_data$AminoAcid), log10(important_data$ATP))
+# plot(log10(sorted_again$`22AA`), log10(sorted_again$`21ATP`))#, col = sorted_again$timestep)
+# plot(log10(important_data$AminoAcid), log10(important_data$ATP))
+par(mfrow= c(3,1))
+# times<- c(1,1000)
+plot(log10(sorted_again$`22AA`), x = sorted_again$timestep)#, xlim = times, main = "params all 1.0")
+plot(log10(sorted_again$`21ATP`),x = sorted_again$timestep)#, xlim = times)
+plot(log10(sorted_again$`20num cells`),x = sorted_again$timestep)#, xlim = times)
+# plot((sorted_again$`22AA`), (sorted_again$`21ATP`))
+
 thresholded<- subset(important_data, important_data$AminoAcid >= 1 & important_data$ATP >= 1)
 plot(log10(thresholded$AminoAcid), log10(thresholded$ATP), col = ceiling(log10(thresholded$k_a_NH4 +1)), main = "coloured by k_a_NH4")
 legend(x = 7, y = 7, legend = c('0.1','10','1000'), pch = 1,col = unique(ceiling(log10(thresholded$k_a_NH4 +1))))

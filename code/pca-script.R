@@ -13,7 +13,7 @@ the_good$ID<- "g"
 the_bad<- read.csv("the-bad.csv", row.names = 1)
 the_bad$ID<-"b"
 the_ugly<- read.csv("the-ugly.csv", row.names = 1)
-the_ugly$ID<- "b" #can be its own factor if 'u' or can be collapsed into bad if 'b'
+the_ugly$ID<- "g" #can be its own factor if 'u' or can be collapsed into bad if 'b'
 
 all_data<- rbind(the_good, the_bad, the_ugly)
 log_data<- log10(all_data[,1:6])
@@ -44,7 +44,7 @@ mca2= dudi.acm(cat_data[,1:6], scannf = F, nf = 6)
 a = rep("green",sum(all_data$ID=="g"))
 b = rep("red",sum(all_data$ID=="b"))
 colr2 = c(a,b)
-eig = 100*mca1$eig/sum(mca1$eig)
+eig = 100*mca2$eig/sum(mca2$eig)
 x1 = paste("PC1",round(eig[1],2),"%")
 x2 = paste("PC2",round(eig[2],2),"%")
 
@@ -80,9 +80,9 @@ plot(mca2$li[,2], mca2$li[,3], col = colr2,xlab = x1, ylab = x2)
 library(FactoMineR)
 library(factoextra)
 
-# mca1<- MCA(cat_data[,1:6])#, quali.sup = cat_data$ID)
-mca1<- MCA(cat_data)
-plot(mca1, col.ind = cat_data$ID)
+mca1<- MCA(cat_data[,1:6])#, quali.sup = cat_data$ID)
+# mca1<- MCA(cat_data)
+plot(mca1, col.ind = cat_data$ID, axes = c(2,4))
 fviz_screeplot(mca1, addlabels = T )
 
 
@@ -93,7 +93,7 @@ fviz_mca_var(mca1, repel = T)#repel means the labels wont overlap but this takes
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(1,4))
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(1,5))
 fviz_mca_biplot(mca1, col.ind = cat_data$ID)#, axes = c(2,3))
-fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(1,2))#ellipse.type = "confidence",)
+fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(2,3))#, ellipse.type = "confidence")
 
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(2,4))
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(2,5))
@@ -118,7 +118,7 @@ result_des[[2]]
 library(ExPosition)
 
 mca3 <- epMCA(cat_data[,1:6], graph = FALSE, correction = "bg")
-plot(mca3$Plotting.Data$fj.pch)
+# plot(mca3$Plotting.Data$fj.pch)
 
 
 

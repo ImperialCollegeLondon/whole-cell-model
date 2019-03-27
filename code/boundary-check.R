@@ -1,5 +1,5 @@
-rm(list=ls())
-graphics.off()
+# rm(list=ls())
+# graphics.off()
 
 library(ggplot2)
 library(reshape2)
@@ -64,7 +64,7 @@ for (i1 in c('0.1','10.0','1000.0')){
               
               end_min<- min(tail(sorted_data))
               print(paste("current min val is", end_min))
-              if (end_min < 1){
+              if (end_min < 5){
                 #add parameter combination to exclusion table
                 current_vals<- data.frame(i1,i2,i3,i4,i5,i6)
                 bad_combos <- rbind(bad_combos,current_vals, stringsAsFactors= FALSE)

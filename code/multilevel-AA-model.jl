@@ -5,7 +5,7 @@ using Pandas
 using Plots
 using Dates
 
-include("parameter-sweep-functions.jl")
+include("multilevel-functions.jl")
 
 # parameters
 thetar= 426.8693338968694 #ribosome transcription threshold, molecules per cell
@@ -108,8 +108,8 @@ time1= 10000.0
 #~ 							global(k_ribo_a)=i6
 
 
-k_ribo_a_AA = 10.0
-k_ribo_AA_a = 10.0
+k_ribo_a_AA = 10000.0
+k_ribo_AA_a = 10000.0
 
 k_a = 10.0
 k_cat_AA = i1 = 10.0
@@ -129,10 +129,32 @@ println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
 #~ 	println("time")
 	solved = solve(problm)
 	df1= DataFrame(solved)
-	Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6.csv")#"testfile.csv"
-	println("model run $i1-$i2-$i3-$i4-$i5-$i6 successful")
+#~ 	Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6.csv")#"testfile.csv"
+	println("model burn in successful")
 #~ 	break
 #~ end
+
+#~ println("Please input how many timesteps you would like the second burn in phase to be (10000 recommended)")
+#~ input2= parse(Float64,readline(stdin))
+input2 = 10000.0
+time2 = time1 + input2
+endstate = size(solved,2)
+init2 =solved[endstate]
+#~ println("setting transporter protein to 1")
+#~ init2[6]=1 #this is to replicate andrea's multilevel model. setting the transporters back to 1 induces a lag in population growth
+println("running cell growth section")
+#global(et) = 1.0 trying to set transporter protein to 1 for the multiscale model. In 
+#andrea's paper they set this to 1 to induce a lag in cell growth
+problm2 = ODEProblem(AA_popn_growth,init2,(time1,time2))
+println("burn in 2 in progress")
+solved2 = solve(problm2)
+println("burn in 2 complete")
+
+    df1= DataFrame(solved)
+    df2= DataFrame(solved2)
+    dfs = [df1,df2]
+    output= DataFrame(Pandas.concat(dfs))
+    Pandas.to_csv(output, "multilevel-output.csv")
 
  plt= Plots.plot(solved,
         lab= ["S_external 1","ribo mrna comp 2","metab enzyme 3","housekpng mrna comp 4","trans mrna comp 5","transporter prot 6","metab mrna comp 7","trans mrna 8","metab mrna 9","housekepng prot 10","si11","housekpng mrna 12","ribo mrna 13","free ribo 14","NH4 int 15","nit mrna 16","nit mrna comp 17","nitrogenase18","cumulative NH4 19","num cells 20","ATP 21","AA 22","AA prot 23","AA mRNA 24","AA mrna comp 25"],
@@ -143,6 +165,11 @@ println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
         legend=:best,
     #     palette=:heat
     #     seriescolor=:auto
+        color = ["#ffe119" "#000000" "#3cb44b" "#0082c8" "#808080" "#46f0f0" "#f032e6" "#d2f53c" "#fabebe" "#008080" "#e6beff" "#aa6e28" "#800000" "#808000" "#ffd8b1" "#000080" "#f58231" "#911eb4" "#e6194b" :grey "#aaffc3" :brown :green :blue :purple]
+    )    
+    plt =plot!(solved2,
+        lab="",
+        xlims = (0,time2),
         color = ["#ffe119" "#000000" "#3cb44b" "#0082c8" "#808080" "#46f0f0" "#f032e6" "#d2f53c" "#fabebe" "#008080" "#e6beff" "#aa6e28" "#800000" "#808000" "#ffd8b1" "#000080" "#f58231" "#911eb4" "#e6194b" :grey "#aaffc3" :brown :green :blue :purple]
     )
 
@@ -156,11 +183,3 @@ println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
 #~ end
 #~ end
 #~ end
-
-
-#~ function test_time(n)
-#~ 	A = rand(n,n)
-#~ 	B = rand(n)
-#~ 	@elapsed A\B
-#~ end
-

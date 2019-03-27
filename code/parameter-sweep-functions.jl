@@ -52,8 +52,8 @@ function AA_simple(results,y,p,t)
     if AA_mrna_ribo<0.000001 AA_mrna_ribo=0 end
 
     #define more constants
-     Kgamma= gmax/180 #Kgamma is the half maximal translational elongation threshold, gmax is the max rate of translational elongation and Kp is net rate of translation of housekeeping proteins
-#~     Kgamma = 3.0e8
+#~      Kgamma= gmax/180 #Kgamma is the half maximal translational elongation threshold, gmax is the max rate of translational elongation and Kp is net rate of translation of housekeeping proteins
+    Kgamma = 3.0e8
     #should equal 7 molecules per cell
     #gam= gmax*a/(Kgamma + a) #gamma is the current rate of translational elongation? gmax is max rate of translational elongation and a is ATP (energy)level
 
@@ -101,7 +101,7 @@ function AA_simple(results,y,p,t)
 
     ##################################################################
 
-    results[1]= 0#((-et*vt*s_out/(Kt + abs(s_out)))*N)-ds*s_out +(export_rate*NH4*50) #change in amount of substrate, a proxy for amount of host plant
+    results[1]= 0#((-et*vt*s_out/(Kt + s_out))*N)-ds*s_out +(export_rate*NH4*50) +1e7 #change in amount of substrate, a proxy for amount of host plant
 
     results[2]= kb*r*mr-ku*rmr-(gam/nr)*rmr-lam*rmr#-dp*r
     #num of ribosome-mRNA complexes coding for ribosomes
@@ -178,4 +178,3 @@ function AA_simple(results,y,p,t)
 
 
 end
-
