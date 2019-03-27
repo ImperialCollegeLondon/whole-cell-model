@@ -35,7 +35,7 @@ plt1
 # important_data$log_atp <- log(important_data$ATP)+0.1
 # plot(log10(sorted_again$`22AA`), log10(sorted_again$`21ATP`))#, col = sorted_again$timestep)
 # plot(log10(important_data$AminoAcid), log10(important_data$ATP))
-par(mfrow= c(3,1))
+par(mfrow= c(2,1))
 # times<- c(1,1000)
 plot(log10(sorted_again$`22AA`), x = sorted_again$timestep)#, xlim = times, main = "params all 1.0")
 plot(log10(sorted_again$`21ATP`),x = sorted_again$timestep)#, xlim = times)

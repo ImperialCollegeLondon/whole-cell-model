@@ -272,7 +272,7 @@ function AA_popn_growth(results,y,p,t)
     #end
 
     AA_a_use = new_AA*2 #each AA produced uses x number of ATP molecules
-
+    AA_NH4_use = new_AA*2 #each AA produced uses 2 NH4 molecules
 
     export_rate=0#0.3
     ################################################
@@ -318,8 +318,8 @@ function AA_popn_growth(results,y,p,t)
     #num of free ribosomes
 
     #new nitrogen fixing equations. also opposite term in ATP equation
-    ##########################################
-    results[15]= 0#fixation*nit-export_rate*NH4 -lam*NH4
+    #####################################Rplot#####
+    results[15]= fixation*nit-export_rate*NH4 -lam*NH4 -AA_NH4_use + 5e6
     #change in num of NH4 molecules in the cell from fixation rate - export rate
     results[16]= 0#(v_nit*a/(thetax + a))+(ku*nit_mrna_ribo)+(gam/nx*nit_mrna_ribo)-(kb*r*nit_mrna)-(dm*nit_mrna)-(lam*nit_mrna)
     #num of free nitrogenase coding mRNA
