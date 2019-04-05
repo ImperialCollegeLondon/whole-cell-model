@@ -92,7 +92,7 @@ init= [s_out,rmr_0,em_0,rmq_0,rmt_0,et_0,rmm_0,
     NH4_0,nit_mrna_0,nit_mrna_ribo_0,nit_0,exported_0,N_0,a_0, AA_0, AA_prot_0,AA_mrna_0,AA_mrna_ribo_0]
 
 
-time1= 10000.0
+time1= 5000.0
 
 #~ for i1 in (0.1,10.0,1000.0)
 #~     global(k_cat_AA)= i1
@@ -136,7 +136,7 @@ println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
 
 #~ println("Please input how many timesteps you would like the second burn in phase to be (10000 recommended)")
 #~ input2= parse(Float64,readline(stdin))
-input2 = 10000.0
+input2 = 5000.0
 time2 = time1 + input2
 endstate = size(solved,2)
 init2 =solved[endstate]

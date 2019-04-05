@@ -319,8 +319,8 @@ function AA_popn_growth(results,y,p,t)
 
     #new nitrogen fixing equations. also opposite term in ATP equation
     #####################################Rplot#####
-    results[15]= fixation*nit-export_rate*NH4 -lam*NH4 -AA_NH4_use + 5e6
-    #change in num of NH4 molecules in the cell from fixation rate - export rate
+    results[15]= fixation*nit-export_rate*NH4 -lam*NH4 -AA_NH4_use + 3e6
+    #change in num of NH4 molecules in the cell from fixation rate - export rate + uptake from the media
     results[16]= 0#(v_nit*a/(thetax + a))+(ku*nit_mrna_ribo)+(gam/nx*nit_mrna_ribo)-(kb*r*nit_mrna)-(dm*nit_mrna)-(lam*nit_mrna)
     #num of free nitrogenase coding mRNA
     results[17]= 0#(kb*r*nit_mrna)-(ku*nit_mrna_ribo)-(gam/nx*nit_mrna_ribo)-(lam*nit_mrna_ribo)
