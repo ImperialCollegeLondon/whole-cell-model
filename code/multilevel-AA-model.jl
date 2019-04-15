@@ -127,7 +127,7 @@ println("solving param-sweep-$i1-$i2-$i3-$i4-$i5-$i6")
 
 #~ while time() - start_time < 300.0 #stop the model run if its been running for more than 5 mins
 #~ 	println("time")
-	solved = solve(problm)
+	solved = ODE.solve(problm)
 	df1= DataFrame(solved)
 #~ 	Pandas.to_csv(df1, "../data/param-sweep-$i1-$i2-$i3-$i4-$i5-$i6.csv")#"testfile.csv"
 	println("model burn in successful")
