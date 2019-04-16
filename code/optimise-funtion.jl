@@ -4,7 +4,13 @@
 #this function should be used in the optimiser to find maximum growth rate
 
 
-function gamma_finder(params)
+
+function gamma_finder(params, y)#input should be three arrays, the first with the 8 parameter values that 
+#we are varying and the second array should be the current values of the 25 molecules
+    
+    
+    results = init 
+    #making an array to record the results in
 
     k_ribo_a= params[1]
     k_ribo_a_AA= params[2]
@@ -17,6 +23,33 @@ function gamma_finder(params)
     k_NH4_AA= params[9]
     #unpack the 9 enzyme kinetic parameters that i want to optimise
     
+    s_out = y[1] #external level of substrate, a proxy for plant growth state since more plant = more substrate
+    rmr= y[2]#num of ribosome/ribosomal mRNA complex molecules
+    em= y[3]#metabolic enzyme molecumes
+    rmq= y[4]#num of ribosome/housekeeping mRNA complex molecules
+    rmt= y[5]#num of ribosome/transporter protein mRNA complex molecules
+    et= y[6]#num of transporter enzyme molecules
+    rmm= y[7]#num of ribosome/metabolic enzyme mRNA complexes
+    mt= y[8]#num of particles of transporter protein mRNA
+    mm= y[9]#num of particles of metabolic enzyme mRNA
+    q= y[10]#num of housekeeping protein molecules
+    si= y[11]#num of substrate molecules inside the cell (internal)
+    mq= y[12]#num of mRNA coding for housekeeping proteins
+    mr= y[13]#num of mRNA coding for ribosomes
+    r= y[14]#num of free ribosomes
+    NH4 = y[15] #num of ammonia molecules fixed
+    nit_mrna = y[16]#num of molecules of nitrogen fixing protein
+    nit_mrna_ribo = y[17]#num of molecules of mRNA coding for nitrogen fixing protein
+    nit = y[18]#num of molecules of mRNA-ribosome complexes coding for nitrogenase
+    exported= y[19]#total amount of NH4 exported
+    N = y[20] #num of bacteria cells
+    a= y[21]#num of ATP (proxy for level of energy)
+    AA = y[22] #num of amino acid molecules
+    AA_prot=y[23]#num of protein molecules that make new amino acids
+    AA_mrna=y[24]#num of mRNA coding for AA making protein
+    AA_mrna_ribo=y[25]#num of mRNA coding for AA making protein bound to ribosomes
+    
+    
     gam= (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA)
     ttrate= (rmq + rmr + rmt + rmm + nit_mrna_ribo+AA_mrna_ribo)*gam
     lam= ttrate/M
@@ -25,7 +58,7 @@ function gamma_finder(params)
 
     AA_vo = ((k_cat_AA*a*NH4)/k_a_NH4*k_a)/(1+((1+(AA/k_a_AA)+(NH4/k_a_NH4)))*(a/k_a)+(1+(AA/k_NH4_AA)*(NH4/k_NH4)))
     new_AA = AA_vo*AA_prot
-    AA_a_use = new_AA*2 #each AA produced uses x number of ATP molecules
+    AA_a_use = new_AA*2
     AA_NH4_use = new_AA*2
     export_rate=0
 
@@ -56,8 +89,26 @@ function gamma_finder(params)
     results[24]=((w_AA*a/(thetax + a)))+(ku*AA_mrna_ribo)+(gam/nx*AA_mrna_ribo)-(kb*r*AA_mrna)-(dm*AA_mrna)-(lam*AA_mrna)#num of free AA mRNAs
     results[25]=(kb*r*AA_mrna)-(ku*AA_mrna_ribo)-(gam/nx*AA_mrna_ribo)-(lam*AA_mrna_ribo)#num of AA mRNAs bound to ribosomes
 
-    end_gam= (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA)
+    #need to add the change back to the original value to get the actual value after that timestep
+    #which can then be used to calculate the growth rate after that step
+    a = a + results[21]
+    AA= AA + results[22]
+    rmq = rmq + results[4]
+    rmr = rmr + results[2]
+    rmt = rmt + results[5]
+    rmm = rmm + resutls[7]
+    nit_mrna_ribo = nit_mrna_ribo + results[17]
+    AA_mrna_ribo = AA_mrna_ribo + results[25]
 
-    
-    
+
+    end_gam= (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA)
+    end_ttrate= (rmq + rmr + rmt + rmm + nit_mrna_ribo+AA_mrna_ribo)*end_gam
+    end_lam= end_ttrate/M
+
+
+    output = [end_lam, results]
+    return(output)
+
+
+    end  
     
