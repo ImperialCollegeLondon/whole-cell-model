@@ -2,9 +2,10 @@
 
 using JuMP
 using GLPK
+using Ipopt
 
-modelAA = Model(with_optimizer(GLPK.Optimizer))
-
+#~ modelAA = Model(with_optimizer(GLPK.Optimizer))
+modelAA = Model(with_optimizer(Ipopt.Optimizer))
 
 #~ @variable(modelAA, 0<=  )
 #the end of the burn in phase
@@ -15,12 +16,12 @@ a = 1.59708e8
 AA = 1000.0
 
 
-@variable(modelAA, 0 <= k_ribo_a <= 10000)
-@variable(modelAA, 0 <= k_ribo_a_AA<= 10000)
-@variable(modelAA, 0 <= k_ribo_AA<= 10000)
+@variable(modelAA, 0 <= k_ribo_a)
+@variable(modelAA, 0 <= k_ribo_a_AA)
+@variable(modelAA, 0 <= k_ribo_AA_a)
 @NLobjective(modelAA, Max, (gmax*a*AA)/(k_ribo_a*k_ribo_a_AA+k_ribo_a_AA*a+k_ribo_AA_a*AA+a*AA))
-@constraint(modelAA, con1, k_ribo_a + k_ribo_a_AA + k_ribo_AA >= 1)
-
+@NLconstraint(modelAA, con1, k_ribo_a + k_ribo_a_AA + k_ribo_AA_a >= 1)
+println("model set up")
 #~ @variable(modelAA, 0<= x ) #create a jump variable called x with a lower bound at zero and upper at 2
 #~ @variable(model1, 0<= y ) #create a second variable y with its own bounds
 #~ @objective(model1, Max, x + y) #define what the object of the optimiser is, here maximising the giving function
@@ -30,15 +31,15 @@ println("model all set up. optimising now")
 optimize!(modelAA)
 println("optimising complete")
 
-objective_value(model1)
+objective_value(modelAA)
 a_end = value(k_ribo_a)
 println("optimal k_ribo_a value is $a_end")
 a_AA_end = value(k_ribo_a_AA)
 println("optimal k_ribo_a_AA value is $a_AA_end")
-AA_end = value(k_ribo_AA)
+AA_end = value(k_ribo_AA_a)
 println("optimal k_ribo_AA value is $AA_end")
 
-
+print((gmax*a*AA)/(a_end*a_AA_end+a_AA_end*a+AA_end*AA+a*AA))
 
 #~ @variable(modelAA, 0<= s_out )
 #~ @variable(modelAA, 0<= rmr )
