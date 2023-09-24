@@ -1,0 +1,55 @@
+real params are [15.211769368990954, 15.578935141732773, 15.303120949322455]
+threshold is [0.0005]
+priors are Uniform{Float64}[Uniform{Float64}(a=0.0, b=20.0), Uniform{Float64}(a=0.1, b=20.0), Uniform{Float64}(a=0.0, b=20.0)]
+n_particles is 500
+round 1 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.0005.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [0.00029972331185806623]
+new priors are Gamma{Float64}[Gamma{Float64}(α=2.504741360611505, θ=4.10516488902648), Gamma{Float64}(α=1.8469292279968266, θ=5.357325572926675), Gamma{Float64}(α=1.9150842484997586, θ=5.200336490391333)]
+round 2 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.00029972331185806623.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [0.00021169206062897098]
+new priors are Gamma{Float64}[Gamma{Float64}(α=3.032024877757665, θ=3.418725980551323), Gamma{Float64}(α=2.4381140042691594, θ=4.06700803760174), Gamma{Float64}(α=2.088355164010327, θ=4.940903879942078)]
+round 3 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.00021169206062897098.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [0.0001699911266794442]
+new priors are Gamma{Float64}[Gamma{Float64}(α=3.990649746437365, θ=2.620206486281721), Gamma{Float64}(α=3.2396013832045187, θ=3.046106212042264), Gamma{Float64}(α=2.1576802866572358, θ=5.000422933328183)]
+round 4 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.0001699911266794442.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [0.00013644933001128178]
+new priors are Gamma{Float64}[Gamma{Float64}(α=5.2255003998794605, θ=2.0164104786504433), Gamma{Float64}(α=4.366543136318639, θ=2.2285094524405533), Gamma{Float64}(α=2.362107540650696, θ=4.748646308325001)]
+round 5 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.00013644933001128178.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [0.00010905012119107521]
+new priors are Gamma{Float64}[Gamma{Float64}(α=6.567340572120735, θ=1.5762402767009875), Gamma{Float64}(α=5.848158176278268, θ=1.6354963014692523), Gamma{Float64}(α=2.45873819479962, θ=4.883472080241358)]
+round 6 of SMC
+new threshold is [9.293143963413073e-5]
+new priors are Gamma{Float64}[Gamma{Float64}(α=10.224123576669852, θ=1.0269841349410762), Gamma{Float64}(α=8.874384084505214, θ=1.058322585899702), Gamma{Float64}(α=2.7641821029804907, θ=4.368672264503842)]
+round 7 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 0.00010905012119107521.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [8.195229013148179e-5]
+new priors are Gamma{Float64}[Gamma{Float64}(α=12.985214373654756, θ=0.8055937064871632), Gamma{Float64}(α=12.357289561387168, θ=0.7790835661005284), Gamma{Float64}(α=3.0964919125506625, θ=4.000117248378251)]
+round 8 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 9.293143963413073e-5.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+┌ Info: GpABC rejection simulation. ϵ = 8.195229013148179e-5.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [6.91751762163268e-5]
+new priors are Gamma{Float64}[Gamma{Float64}(α=18.715496880082508, θ=0.5642298322713619), Gamma{Float64}(α=16.51650554738432, θ=0.596892755872161), Gamma{Float64}(α=3.2862682371877487, θ=4.076612533483368)]
+round 9 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 6.91751762163268e-5.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [5.494805963452869e-5]
+new priors are Gamma{Float64}[Gamma{Float64}(α=27.470489610564936, θ=0.38230963349358854), Gamma{Float64}(α=21.166761128193098, θ=0.47715883540344334), Gamma{Float64}(α=3.604916227574778, θ=3.6310582561577105)]
+round 10 of SMC
+┌ Info: GpABC rejection simulation. ϵ = 5.494805963452869e-5.
+└ @ GpABC C:\Users\leann\.julia\packages\GpABC\e09ZY\src\abc\rejection.jl:47
+new threshold is [4.738848663909013e-5]
+new priors are Gamma{Float64}[Gamma{Float64}(α=36.48683768654143, θ=0.2858752735354485), Gamma{Float64}(α=28.941236339574125, θ=0.3490274141410943), Gamma{Float64}(α=3.939698173766784, θ=3.3693707032045457)]
+finished SMC

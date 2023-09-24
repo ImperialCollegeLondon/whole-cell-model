@@ -1,0 +1,15 @@
+## to do 23/03/20
+
+pick 3 values, one at each edge of prior and one in centre. pause random values for now, do random once decided epsilon schedule
+
+check the acceptance rate
+
+decrease final epsilon, look for convergence of mean, mode and median
+
+is the final posterior maximum to be near true value??
+
+pull out maximum as well as the mean of the final pop, scatter plot of mean and mode vs real value
+    
+    increase bin nums until it starts to become noisy, find middle ground of bin size
+    
+ask Suhail about using servers and GPU on laptop

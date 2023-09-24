@@ -13,7 +13,7 @@ the_good$ID<- "g"
 the_bad<- read.csv("the-bad.csv", row.names = 1)
 the_bad$ID<-"b"
 the_ugly<- read.csv("the-ugly.csv", row.names = 1)
-the_ugly$ID<- "g" #can be its own factor if 'u' or can be collapsed into bad if 'b'
+the_ugly$ID<- "b" #can be its own factor if 'u' or can be collapsed into bad if 'b' or good if 'g'
 
 all_data<- rbind(the_good, the_bad, the_ugly)
 log_data<- log10(all_data[,1:6])
@@ -54,19 +54,32 @@ plot(mca2$li[,2], mca2$li[,3], col = colr2,xlab = x1, ylab = x2)
 
 
 
-# pca1= dudi.pca(df = log_data[,1:6], center = T, scale = T)
-# eig = 100*pca1$eig/sum(pca1$eig)
-# x1 = paste("PC1",round(eig[1],2),"%")
-# x2 = paste("PC2",round(eig[2],2),"%")
-# 
-# a = rep("green",sum(all_data$ID=="g"))
-# b = rep("red",sum(all_data$ID=="b"))
-# c = rep("blue", sum(all_data$ID =="u"))
-# colr2 = c(a,b,c)
-# 
-# plot(pca1$li[,1], pca1$li[,2], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
-# plot(pca1$li[,1], pca1$li[,3], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
-# plot(pca1$li[,3], pca1$li[,2], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
+pca1= dudi.pca(df = log_data[,1:6], center = T, scale = T)
+eig = 100*pca1$eig/sum(pca1$eig)
+x1 = paste("PC1",round(eig[1],2),"%")
+x2 = paste("PC2",round(eig[2],2),"%")
+
+a = rep("green",sum(all_data$ID=="g"))
+b = rep("red",sum(all_data$ID=="b"))
+c = rep("blue", sum(all_data$ID =="u"))
+colr2 = c(a,b,c)
+
+plot(pca1$li[,1], pca1$li[,2], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
+plot(pca1$li[,1], pca1$li[,3], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
+plot(pca1$li[,3], pca1$li[,2], xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
+#######################################################################################
+#doing a PCA of the good and bad separately
+
+
+pca_good = dudi.pca(df = the_good[,1,6], center = T, scale = T)
+
+plot(pca_good$li[,1], pca_good$co[,1])#, xlab = x1, ylab = x2, col = colr2, pch = 16, cex = 0.8)
+
+
+
+qplot(the_good[,4],the_good[,5]) + scale_x_log10() + scale_y_log10() + theme_bw()
+
+
 #######################################################################################
 ##trying a diffusion map for dimensionality reduction
 # 
@@ -82,7 +95,7 @@ library(factoextra)
 
 mca1<- MCA(cat_data[,1:6])#, quali.sup = cat_data$ID)
 # mca1<- MCA(cat_data)
-plot(mca1, col.ind = cat_data$ID, axes = c(2,4))
+plot(mca1, col.ind = cat_data$ID, axes = c(2,3))
 fviz_screeplot(mca1, addlabels = T )
 
 
@@ -93,7 +106,19 @@ fviz_mca_var(mca1, repel = T)#repel means the labels wont overlap but this takes
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(1,4))
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(1,5))
 fviz_mca_biplot(mca1, col.ind = cat_data$ID)#, axes = c(2,3))
-fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(2,3))#, ellipse.type = "confidence")
+one_two<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(1,2), legend='none')#, ellipse.type = "confidence")
+one_three<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(1,3), legend='none')
+one_four<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(1,4), legend='none')
+one_five<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(1,5), legend='none')
+two_three<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(2,3), legend='none')
+two_four<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(2,4), legend='none')
+two_five<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(2,5), legend='none')
+three_four<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(3,4), legend='none')
+three_five<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(3,5), legend='none')
+four_five<- fviz_mca_ind(mca1, label = "none", habillage = cat_data$ID, addEllipses = T,  axes = c(4,5), legend='none')
+
+grid.arrange(one_two,one_three,one_four,one_five,two_three,two_four,two_five,three_four,three_five,four_five)
+
 
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(2,4))
 # fviz_mca_biplot(mca1, col.ind = cat_data$ID, axes = c(2,5))

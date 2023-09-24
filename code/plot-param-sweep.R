@@ -14,7 +14,8 @@ library(reshape2)
 # important_data <- read.csv("param-sweep5-results.csv")
 # raw_data <- read.csv("../data/0.1/param-sweep-0.1-0.1-0.1-0.1-1000.0-0.1.csv")#oscillation
 # raw_data <- read.csv("../data/param-sweep-10.0-10.0-10.0-10.0-10.0-10.0.csv")
-raw_data<- read.csv("multilevel-output.csv")
+raw_data<- read.csv("../data/latest-output.csv")
+# raw_data<- read.csv("multilevel-output.csv")
 
 # raw_data<- important_data[-1]
 sorted_data= raw_data[,order(names(raw_data))]
@@ -26,7 +27,7 @@ colnames(sorted_again)= c("timestep","S_external","NH4","ATP","AA","num cells","
 # sorted_again<-sorted_data[,c("tamp","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25")]
 # colnames(sorted_again)= c("timestep","1S_external","2ribo mrna comp","3metab enzyme","4housekpng mrna comp","5trans mrna comp","6transporter prot","7metab mrna comp","8trans mrna","9metab mrna","10housekepng prot","11si","12housekpng mrna","13ribo mrna","14free ribo","15NH4 int","16nit mrna","17nit mrna comp","18nitrogenase","19cumulative NH4","20num cells","21ATP","22AA","23AA prot","24AA mRNA","25AA mrna comp")
 short_data<- sorted_again[sorted_again$timestep > 0 ,]
-short_data<- short_data[short_data$timestep < 16000 ,]
+short_data<- short_data[short_data$timestep < 31000 ,]
 
 melted_data<- melt(sorted_again, id.var="timestep")
 melted_short<- melt(short_data, id.var="timestep")
